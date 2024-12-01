@@ -46,6 +46,7 @@ type GlobalStateKey =
 	| "lastShownAnnouncementId"
 	| "customInstructions"
 	| "alwaysAllowReadOnly"
+	| "autoSaveEdits"
 	| "taskHistory"
 	| "openAiBaseUrl"
 	| "openAiModelId"
@@ -411,6 +412,10 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 						if (this.cline) {
 							this.cline.alwaysAllowReadOnly = message.bool ?? false
 						}
+						await this.postStateToWebview()
+						break
+					case "autoSaveEdits":
+						await this.updateGlobalState("autoSaveEdits", message.bool ?? undefined)
 						await this.postStateToWebview()
 						break
 					case "askResponse":
@@ -784,13 +789,14 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 	}
 
 	async getStateToPostToWebview() {
-		const { apiConfiguration, lastShownAnnouncementId, customInstructions, alwaysAllowReadOnly, taskHistory } =
+		const { apiConfiguration, lastShownAnnouncementId, customInstructions, alwaysAllowReadOnly, autoSaveEdits, taskHistory } =
 			await this.getState()
 		return {
 			version: this.context.extension?.packageJSON?.version ?? "",
 			apiConfiguration,
 			customInstructions,
 			alwaysAllowReadOnly,
+			autoSaveEdits,
 			uriScheme: vscode.env.uriScheme,
 			clineMessages: this.cline?.clineMessages || [],
 			taskHistory: (taskHistory || []).filter((item) => item.ts && item.task).sort((a, b) => b.ts - a.ts),

@@ -5,6 +5,7 @@ export interface WebviewMessage {
 		| "apiConfiguration"
 		| "customInstructions"
 		| "alwaysAllowReadOnly"
+		| "autoSaveEdits"
 		| "webviewDidLaunch"
 		| "newTask"
 		| "askResponse"
