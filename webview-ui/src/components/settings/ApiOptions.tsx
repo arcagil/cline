@@ -17,6 +17,8 @@ import {
 	azureOpenAiDefaultApiVersion,
 	bedrockDefaultModelId,
 	bedrockModels,
+	cerebrasDefaultModelId,
+	cerebrasModels,
 	geminiDefaultModelId,
 	geminiModels,
 	openAiModelInfoSaneDefaults,
@@ -133,10 +135,53 @@ const ApiOptions = ({ showModelOptions, apiErrorMessage, modelIdErrorMessage }: 
 					<VSCodeOption value="bedrock">AWS Bedrock</VSCodeOption>
 					<VSCodeOption value="openai-native">OpenAI</VSCodeOption>
 					<VSCodeOption value="openai">OpenAI Compatible</VSCodeOption>
+					<VSCodeOption value="cerebras">Cerebras AI</VSCodeOption>
 					<VSCodeOption value="lmstudio">LM Studio</VSCodeOption>
 					<VSCodeOption value="ollama">Ollama</VSCodeOption>
 				</VSCodeDropdown>
 			</div>
+
+			{selectedProvider === "cerebras" && (
+				<div>
+					<VSCodeTextField
+						value={apiConfiguration?.cerebrasApiKey || ""}
+						style={{ width: "100%" }}
+						type="password"
+						onInput={handleInputChange("cerebrasApiKey")}
+						placeholder="Enter API Key...">
+						<span style={{ fontWeight: 500 }}>Cerebras API Key</span>
+					</VSCodeTextField>
+
+					<p style={{
+						fontSize: "12px",
+						marginTop: 3,
+						color: "var(--vscode-descriptionForeground)",
+					}}>
+						This key is stored locally and only used to make API requests from this extension.
+						{!apiConfiguration?.cerebrasApiKey && (
+							<VSCodeLink
+								href="https://inference-docs.cerebras.ai/introduction#getting-started"
+								style={{ display: "inline", fontSize: "inherit" }}>
+								You can get a Cerebras API key by signing up here.
+							</VSCodeLink>
+						)}
+					</p>
+
+					{showModelOptions && (
+						<div style={{ marginTop: 10 }}>
+							<label htmlFor="model-id">
+								<span style={{ fontWeight: 500 }}>Model</span>
+							</label>
+							{createDropdown(cerebrasModels)}
+							{modelIdErrorMessage && (
+								<p style={{ color: "var(--vscode-errorForeground)", margin: "5px 0 0" }}>
+									{modelIdErrorMessage}
+								</p>
+							)}
+						</div>
+					)}
+				</div>
+			)}
 
 			{selectedProvider === "anthropic" && (
 				<div>

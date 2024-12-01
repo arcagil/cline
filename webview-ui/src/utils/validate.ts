@@ -52,6 +52,14 @@ export function validateApiConfiguration(apiConfiguration?: ApiConfiguration): s
 					return "You must provide a valid model ID."
 				}
 				break
+			case "cerebras":
+				if (!apiConfiguration.cerebrasApiKey) {
+					return "You must provide a valid API key or choose a different provider."
+				}
+				if (!apiConfiguration.cerebrasModelId) {
+					return "You must provide a valid model ID."
+				}
+				break
 		}
 	}
 	return undefined

@@ -8,11 +8,14 @@ export type ApiProvider =
 	| "lmstudio"
 	| "gemini"
 	| "openai-native"
+	| "cerebras"
 
 export interface ApiHandlerOptions {
 	apiModelId?: string
 	apiKey?: string // anthropic
 	anthropicBaseUrl?: string
+	cerebrasApiKey?: string
+	cerebrasModelId?: string
 	openRouterApiKey?: string
 	openRouterModelId?: string
 	openRouterModelInfo?: ModelInfo
@@ -220,6 +223,29 @@ export const vertexModels = {
 		supportsPromptCache: false,
 		inputPrice: 0.25,
 		outputPrice: 1.25,
+	},
+} as const satisfies Record<string, ModelInfo>
+
+// Cerebras
+// https://inference-docs.cerebras.ai/api-reference/chat-completions
+export type CerebrasModelId = keyof typeof cerebrasModels
+export const cerebrasDefaultModelId: CerebrasModelId = "cerebras/btlm-3b-8k-base"
+export const cerebrasModels = {
+	"cerebras/btlm-3b-8k-base": {
+		maxTokens: 8192,
+		contextWindow: 8192,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 0.0001, // Approximate, may need adjustment
+		outputPrice: 0.0001, // Approximate, may need adjustment
+	},
+	"cerebras/llama-2-7b": {
+		maxTokens: 4096,
+		contextWindow: 4096,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 0.0002, // Approximate, may need adjustment
+		outputPrice: 0.0002, // Approximate, may need adjustment
 	},
 } as const satisfies Record<string, ModelInfo>
 
