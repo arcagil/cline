@@ -49,12 +49,16 @@ export interface ModelInfo {
 	contextWindow?: number
 	supportsImages?: boolean
 	supportsComputerUse?: boolean
-	supportsPromptCache: boolean // this value is hardcoded for now
+	supportsPromptCache: boolean
+	supportsCompletion?: boolean
+	supportsChat?: boolean
+	supportsDeterminism?: boolean
 	inputPrice?: number
 	outputPrice?: number
 	cacheWritesPrice?: number
 	cacheReadsPrice?: number
 	description?: string
+	owner?: string
 }
 
 // Anthropic
@@ -229,21 +233,31 @@ export const vertexModels = {
 // Cerebras
 // https://inference-docs.cerebras.ai/api-reference/chat-completions
 export type CerebrasModelId = keyof typeof cerebrasModels
-export const cerebrasDefaultModelId: CerebrasModelId = "cerebras/btlm-3b-8k-base"
+export const cerebrasDefaultModelId: CerebrasModelId = "llama3.1-8b"
 export const cerebrasModels = {
-	"cerebras/btlm-3b-8k-base": {
+	"llama3.1-8b": {
 		maxTokens: 8192,
 		contextWindow: 8192,
 		supportsImages: false,
 		supportsPromptCache: false,
+		supportsCompletion: true,
+		supportsChat: true,
+		supportsDeterminism: true, // via seed parameter
+		description: "Meta's LLaMA 3.1 8B model for chat and completion tasks",
+		owner: "Meta",
 		inputPrice: 0.0001, // Approximate, may need adjustment
 		outputPrice: 0.0001, // Approximate, may need adjustment
 	},
-	"cerebras/llama-2-7b": {
-		maxTokens: 4096,
-		contextWindow: 4096,
+	"llama3.1-70b": {
+		maxTokens: 8192,
+		contextWindow: 8192,
 		supportsImages: false,
 		supportsPromptCache: false,
+		supportsCompletion: true,
+		supportsChat: true,
+		supportsDeterminism: true, // via seed parameter
+		description: "Meta's LLaMA 3.1 70B model for chat and completion tasks",
+		owner: "Meta",
 		inputPrice: 0.0002, // Approximate, may need adjustment
 		outputPrice: 0.0002, // Approximate, may need adjustment
 	},

@@ -15,6 +15,9 @@ import { ApiStream } from "./transform/stream"
 export interface ApiHandler {
 	createMessage(systemPrompt: string, messages: Anthropic.Messages.MessageParam[]): ApiStream
 	getModel(): { id: string; info: ModelInfo }
+	createCompletion?(prompt: string | string[], options?: any): ApiStream
+	listModels?(): Promise<any[]>
+	getModelInfo?(modelId: string): Promise<any>
 }
 
 export function buildApiHandler(configuration: ApiConfiguration): ApiHandler {
