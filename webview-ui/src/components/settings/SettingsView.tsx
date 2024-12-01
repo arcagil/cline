@@ -19,6 +19,8 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 		setCustomInstructions,
 		alwaysAllowReadOnly,
 		setAlwaysAllowReadOnly,
+		autoSaveEdits,
+		setAutoSaveEdits,
 		openRouterModels,
 	} = useExtensionState()
 	const [apiErrorMessage, setApiErrorMessage] = useState<string | undefined>(undefined)
@@ -33,6 +35,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 			vscode.postMessage({ type: "apiConfiguration", apiConfiguration })
 			vscode.postMessage({ type: "customInstructions", text: customInstructions })
 			vscode.postMessage({ type: "alwaysAllowReadOnly", bool: alwaysAllowReadOnly })
+			vscode.postMessage({ type: "autoSaveEdits", bool: autoSaveEdits })
 			onDone()
 		}
 	}
@@ -90,6 +93,12 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 						apiErrorMessage={apiErrorMessage}
 						modelIdErrorMessage={modelIdErrorMessage}
 					/>
+				</div>
+
+				<div style={{ marginBottom: 15 }}>
+					<VSCodeCheckbox checked={autoSaveEdits} onChange={(e) => setAutoSaveEdits(e.target.checked)}>
+						Auto-save edits without prompting
+					</VSCodeCheckbox>
 				</div>
 
 				<div style={{ marginBottom: 5 }}>
